@@ -1,22 +1,24 @@
 #include "Timer.h"
 
-
 unsigned long Timer::reset()
 {
   return programStart = millis();
 }
-
-unsigned long Timer::secCounter(int wantedSeconds)
+bool Timer::millisCounter(int wantedMilliseconds)
 {
-  return (wantedSeconds * oneSecond);
+  return (millis() - programStart >= oneMillisecond * wantedMilliseconds);
+}
+bool Timer::secCounter(int wantedSeconds)
+{
+  return (millis() - programStart >= oneSecond * wantedSeconds);
 }
 
-unsigned long Timer::minCounter(int wantedMinutes)
+bool Timer::minCounter(int wantedMinutes)
 {
-  return (wantedMinutes * oneMinute);
+  return (millis() -programStart >= wantedMinutes * oneMinute);
 }
 
-unsigned long Timer::hourCounter(int wantedHours)
+bool Timer::hourCounter(int wantedHours)
 {
-  return (wantedHours * oneHour);
+  return (millis() - programStart >= wantedHours * oneHour);
 }

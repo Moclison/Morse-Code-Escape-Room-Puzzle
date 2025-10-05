@@ -3,19 +3,24 @@
 
 #include "Arduino.h"
 
-class Timer {
-  unsigned long programStart;
+class Timer 
+{
+  private:
+    unsigned long programStart;
 
-  unsigned long const oneSecond = 1000;
-  unsigned long const oneMinute = oneSecond * 60;
-  unsigned long const oneHour = oneMinute * 60;
 
   public:
+    static constexpr int oneMillisecond = 1;
+    static constexpr unsigned long oneSecond = oneMillisecond * 1000;
+    static constexpr unsigned long oneMinute = oneSecond * 60;
+    static constexpr unsigned long oneHour = oneMinute * 60;
+    
     unsigned long reset();
 
-    unsigned long secCounter(int wantedSeconds);
-    unsigned long minCounter(int wantedMinutes);
-    unsigned long hourCounter(int wantedHours);
+    bool millisCounter(int wantedMilliseconds);
+    bool secCounter(int wantedSeconds);
+    bool minCounter(int wantedMinutes);
+    bool hourCounter(int wantedHours);
 
 };
 #endif 
