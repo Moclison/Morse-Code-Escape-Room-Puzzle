@@ -1,6 +1,11 @@
 #include "MorseCode.h"
 #include "Timer.h"
 
+Timer MorseTimer;
+
+
+
+
     struct MorseCodeSet
     {
       String crow = "-.-. .-. --- .--";
@@ -42,27 +47,49 @@ String MorseCode::morseCodeStrings(int stringNumber)
   }
 }
 
-void MorseCode::dot()
+void MorseCode::dot(int morseCodeLed, long oneUnit)
+{ 
+
+  digitalWrite(morseCodeLed, HIGH);
+  if (MorseTimer.millisCounter(oneUnit))
+  {
+    digitalWrite(morseCodeLed, LOW);
+    MorseTimer.reset();
+  }
+}
+
+void MorseCode::shortSpace(int morseCodeLed, long oneUnit)
 {
 
 }
 
-void MorseCode::dash()
+void MorseCode::dash(int morseCodeLed, long threeUnits)
+{
+  digitalWrite(morseCodeLed, HIGH);
+  if (MorseTimer.millisCounter(threeUnits))
+  {
+    digitalWrite(morseCodeLed, LOW);
+    MorseTimer.reset();
+  }
+}
+
+void MorseCode::mediumSpace(int morseCodeLed, long threeUnits)
 {
 
+}
+
+void MorseCode:wordSpace(int morseCodeLed, long sevenUnits)
+{
+  
 }
 
 void MorseCode::morseCodeReader(String morseCode)
 {
+  
 
 }
 
-void MorseCode::on()
-{
-
-}
-
-void MorseCode::off()
+void MorseCode::off(int morseCodeLed)
 {
 
 }

@@ -3,6 +3,8 @@
 
 #include "Arduino.h"
 
+
+
 class Timer 
 {
   private:
@@ -17,10 +19,12 @@ class Timer
     
     unsigned long reset();
 
-    bool millisCounter(int wantedMilliseconds);
-    bool secCounter(int wantedSeconds);
-    bool minCounter(int wantedMinutes);
-    bool hourCounter(int wantedHours);
+    bool millisCounter(float wantedMilliseconds);
+    bool secCounter(float wantedSeconds);
+    bool minCounter(float wantedMinutes);
+    bool hourCounter(float wantedHours);
 
 };
+
+
 #endif 

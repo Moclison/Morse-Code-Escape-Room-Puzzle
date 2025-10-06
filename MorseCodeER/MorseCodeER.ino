@@ -7,11 +7,13 @@ COMMENTS: Need to make class that plays morse code.
 */
 #include "Timer.h"
 #include "MinuteBar.h"
+#include "MorseCode.h"
 
 Timer timer;
 MinuteBar minutebar;
+MorseCode morsecode;
 
-int const ledComplete = 3;
+
 
 
 void setup() 
@@ -19,8 +21,11 @@ void setup()
   Serial.begin(9600);
   
   //This is temp turns on led and sets its mode for the morse code led and the complete led.
-  pinMode(ledComplete, OUTPUT);
-  digitalWrite(ledComplete, LOW);
+  pinMode(morsecode.morseCodeLed, OUTPUT);
+  digitalWrite(morsecode.morseCodeLed, LOW);
+
+  
+
 
   //this turns on all timer leds
   minutebar.on();
@@ -32,5 +37,7 @@ void loop()
     minutebar.startTimer();
     timer.reset();
   }
+
+ 
   
 }
