@@ -2,10 +2,6 @@
 #include "Timer.h"
 
 Timer MorseTimer;
-
-
-
-
     struct MorseCodeSet
     {
       String crow = "-.-. .-. --- .--";
@@ -17,18 +13,21 @@ Timer MorseTimer;
 
 MorseCodeSet MorseCodes;
 
+
+
 int MorseCode::randomNumber(int min, int max)
 {
   randomSeed(analogRead(0));
-  int stringNumber = random(min, max);
+  int randomNum = random(min, max);
 
-  return stringNumber;
+  return randomNum;
 }
 
 
-String MorseCode::morseCodeStrings(int stringNumber)
+
+String MorseCode::morseCodeStrings(int randomNum)
 {
-  switch(stringNumber){
+  switch(randomNum){
     case 1:
       return MorseCodes.crow;
       break;
@@ -47,30 +46,37 @@ String MorseCode::morseCodeStrings(int stringNumber)
   }
 }
 
+
 void MorseCode::dot(int morseCodeLed, long oneUnit)
 { 
-
   digitalWrite(morseCodeLed, HIGH);
   if (MorseTimer.millisCounter(oneUnit))
   {
-    digitalWrite(morseCodeLed, LOW);
     MorseTimer.reset();
   }
 }
 
 void MorseCode::shortSpace(int morseCodeLed, long oneUnit)
 {
-
+  digitalWrite(morseCodeLed, LOW);
+  if (MorseTimer.millisCounter(oneUnit))
+  {
+    MorseTimer.reset();
+  }
 }
 
 void MorseCode::dash(int morseCodeLed, long threeUnits)
 {
-  digitalWrite(morseCodeLed, HIGH);
   if (MorseTimer.millisCounter(threeUnits))
+  {
+    digitalWrite(morseCodeLed, HIGH);
+  }
+  if (MorseTimer.millisCounter(threeUnits * 2))
   {
     digitalWrite(morseCodeLed, LOW);
     MorseTimer.reset();
   }
+  
 }
 
 void MorseCode::mediumSpace(int morseCodeLed, long threeUnits)
@@ -78,14 +84,28 @@ void MorseCode::mediumSpace(int morseCodeLed, long threeUnits)
 
 }
 
-void MorseCode:wordSpace(int morseCodeLed, long sevenUnits)
+void MorseCode::wordSpace(int morseCodeLed, long sevenUnits)
 {
   
 }
 
-void MorseCode::morseCodeReader(String morseCode)
+void MorseCode::morseCodeReader(const String randomStr)
 {
-  
+  for (int static character = 0; character <= randomStr.length();) 
+  {
+    if (!isSpace(randomStr[character]))
+    {
+      dash(morseCodeLed, threeUnits);
+      
+      break;
+    }
+    if (isSpace(randomStr[character]))
+    {
+      Serial.print("space");
+      shortSpace(morseCodeLed, oneUnit);
+      break;
+    }
+  }
 
 }
 
