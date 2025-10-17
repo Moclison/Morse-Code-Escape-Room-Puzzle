@@ -19,9 +19,12 @@ Timer timer;
 MinuteBar minutebar;
 MorseCode morsecode;
 
-int const min = 1;
-int const max = 6;
 
+int const min = 1; // these numbers represesnt the amount of morsecode translation there are
+int const max = 6; //there are not six strings, but that how random works.
+
+int randNum  = morsecode.randomNumber(min, max);
+String morseString = morsecode.morseCodeStrings(randNum);
 
 void setup() 
 {
@@ -30,11 +33,8 @@ void setup()
   //This is temp turns on led and sets its mode for the morse code led and the complete led.
   pinMode(morsecode.morseCodeLed, OUTPUT);
   digitalWrite(morsecode.morseCodeLed, LOW);
-
-  Serial.print(morsecode.morseCodeStrings(morsecode.randomNumber(min, max)));
-
-  //this turns on all timer leds
-  minutebar.on();
+  
+  minutebar.on(); //this turns on all timer leds
 }
 
 void loop() 
@@ -44,8 +44,10 @@ void loop()
     timer.reset();
   }
 
-  morsecode.morseCodeReader(morsecode.morseCodeStrings(morsecode.randomNumber(min, max)));
 
+  // figure out how to put this in a header file and cpp file
+
+  morsecode.morseCodeReader(morseString);
   
 
  

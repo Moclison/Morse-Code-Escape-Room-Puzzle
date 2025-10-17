@@ -7,15 +7,23 @@
 class MinuteBar 
 {
   private:
+    
+
+    struct LedMinSet
+    {
+      static const int One = 8;
+      static const int Two = 9;
+      static const int Three = 10;
+      static const int Four = 11;
+      static const int Five = 12;
+      static const int Six = 13;
+    };
+  
+    static LedMinSet LedMin;
+
     static const int maximumMin;
 
     static const int ledMins[6];
-    static const int ledMinOne = 8;
-    static const int ledMinTwo = 9;
-    static const int ledMinThree = 10;
-    static const int ledMinFour = 11;
-    static const int ledMinFive = 12;
-    static const int ledMinSix = 13;
     
   public:
     static int currentMinute;

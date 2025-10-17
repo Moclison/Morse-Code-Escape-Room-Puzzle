@@ -15,9 +15,16 @@ class MorseCode
       String lms7 =  ".-.. -- ... --...";
     };
 
+    MorseCodeSet MorseCodeString;
+
     static constexpr long oneUnit = 500; //milliseconds
     static constexpr long threeUnits = oneUnit * 3;
     static constexpr long sevenUnits = oneUnit * 7;
+
+    unsigned long previousTime;
+    bool isProcessing = false;
+    long currentDuration;
+    int currentChar = 0;
 
     void dot(int morseCodeLed, long oneUnit);
     void shortSpace(int morseCodeLed, long oneUnit);
@@ -27,10 +34,9 @@ class MorseCode
 
   public:
     int static randomNumber(int min, int max);
-    String static morseCodeStrings(int randomNum);
-    
+    String morseCodeStrings(int randomNum);
 
-    const int morseCodeLed = 3;
+    const int morseCodeLed = 13;
 
 
     void morseCodeReader(String randomStr);

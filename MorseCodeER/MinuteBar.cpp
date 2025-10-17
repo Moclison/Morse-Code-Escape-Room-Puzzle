@@ -1,7 +1,7 @@
 #include "MinuteBar.h"
 
 constexpr int MinuteBar::maximumMin = sizeof(ledMins) / sizeof(ledMins[0]) - 1;
-const int MinuteBar::ledMins[6] = {ledMinOne, ledMinTwo, ledMinThree, ledMinFour, ledMinFive, ledMinSix};
+const int MinuteBar::ledMins[6] = {LedMin.One, LedMin.Two, LedMin.Three, LedMin.Four, LedMin.Five, LedMin.Six};
 int MinuteBar::currentMinute = 0;
 
 

@@ -2,18 +2,6 @@
 #include "Timer.h"
 
 Timer MorseTimer;
-    struct MorseCodeSet
-    {
-      String crow = "-.-. .-. --- .--";
-      String oneeqb = ".---- . --.- -...";
-      String b2rt = "-... ..--- .-. -";
-      String nineghj = "----. --. .... .---";
-      String lms7 =  ".-.. -- ... --...";
-    };
-
-MorseCodeSet MorseCodes;
-
-
 
 int MorseCode::randomNumber(int min, int max)
 {
@@ -29,19 +17,19 @@ String MorseCode::morseCodeStrings(int randomNum)
 {
   switch(randomNum){
     case 1:
-      return MorseCodes.crow;
+      return MorseCodeString.crow;
       break;
     case 2:
-      return MorseCodes.oneeqb;
+      return MorseCodeString.oneeqb;
       break;
     case 3:
-      return MorseCodes.b2rt;
+      return MorseCodeString.b2rt;
       break;
     case 4:
-      return MorseCodes.nineghj;
+      return MorseCodeString.nineghj;
       break;
     case 5:
-      return MorseCodes.lms7;
+      return MorseCodeString.lms7;
       break;
   }
 }
@@ -49,11 +37,8 @@ String MorseCode::morseCodeStrings(int randomNum)
 
 void MorseCode::dot(int morseCodeLed, long oneUnit)
 { 
-  digitalWrite(morseCodeLed, HIGH);
-  if (MorseTimer.millisCounter(oneUnit))
-  {
-    MorseTimer.reset();
-  }
+    digitalWrite(morseCodeLed, HIGH);
+    currentDuration = oneUnit; // dot = 1 unit
 }
 
 void MorseCode::shortSpace(int morseCodeLed, long oneUnit)
@@ -67,46 +52,63 @@ void MorseCode::shortSpace(int morseCodeLed, long oneUnit)
 
 void MorseCode::dash(int morseCodeLed, long threeUnits)
 {
-  if (MorseTimer.millisCounter(threeUnits))
-  {
-    digitalWrite(morseCodeLed, HIGH);
-  }
-  if (MorseTimer.millisCounter(threeUnits * 2))
-  {
-    digitalWrite(morseCodeLed, LOW);
-    MorseTimer.reset();
-  }
+  digitalWrite(morseCodeLed, HIGH);
+  currentDuration = threeUnits;
   
 }
 
 void MorseCode::mediumSpace(int morseCodeLed, long threeUnits)
 {
+  digitalWrite(morseCodeLed, LOW);
+  currentDuration = threeUnits;
 
 }
 
 void MorseCode::wordSpace(int morseCodeLed, long sevenUnits)
 {
-  
+  digitalWrite(morseCodeLed, LOW);
+  currentDuration = sevenUnits;
 }
 
-void MorseCode::morseCodeReader(const String randomStr)
+void MorseCode::morseCodeReader(String morseString)
 {
-  for (int static character = 0; character <= randomStr.length();) 
+  if (currentChar < morseString.length()) 
   {
-    if (!isSpace(randomStr[character]))
+    char symbol = morseString[currentChar];
+
+    if (!isProcessing) 
     {
-      dash(morseCodeLed, threeUnits);
-      
-      break;
-    }
-    if (isSpace(randomStr[character]))
-    {
-      Serial.print("space");
-      shortSpace(morseCodeLed, oneUnit);
-      break;
+      if (symbol == '.') 
+      {
+        MorseCode::dot(morseCodeLed, oneUnit);
+
+      } else if (symbol == '-') 
+      {
+        MorseCode::dash(morseCodeLed, threeUnits);// dash = 3 units
+
+      } else if (symbol == ' ') 
+      {
+        MorseCode::mediumSpace(morseCodeLed, threeUnits);
+
+      } else if (currentChar.equals()) {
+        digitalWrite(morseCodeLed, LOW);
+        currentDuration = sevenUnits; // space between words
+      }
+
+      previousTime = millis();
+      isProcessing = true;
+    } else {
+      if (millis() - previousTime >= currentDuration) {
+        Serial.print("Processing: ");
+        Serial.println(symbol);
+        digitalWrite(morseCodeLed, LOW); // turn off after duration
+        isProcessing = false;
+        currentChar++; // move to next character
+        previousTime = millis(); // optional pause between characters
+      }
     }
   }
-
+  
 }
 
 void MorseCode::off(int morseCodeLed)
