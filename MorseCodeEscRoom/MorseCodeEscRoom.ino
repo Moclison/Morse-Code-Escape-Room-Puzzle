@@ -4,39 +4,42 @@ AUTHOR: LOUIS MEEVERS-SCHOLTE
 DATE: Oct. 19 2025 12:30AM
 RESOURCES: https://copilot.microsoft.com/, https://docs.arduino.cc/programming/
 COMMENTS: 
-          Then see if you can make red siren lights.
-          Then make it so the user can enter an answer and the light can turn green if correct.
-          ::FINISH LINE::
 */
 #include "TimerClass.h"
 #include "MinuteBarClass.h"
 #include "MorseCodeClass.h"
 
+
+
 TimerClass Timer;
 MinuteBarClass Minutebar;
 MorseCodeClass Morsecode;
 
+int static sirenLight = 0;
+
 String randomStr; //this lets the string stay random, since analog is not random unless in setup or loop functions.
+
 
 void setup() 
 {
+  Serial.begin(9600);
+
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+
   // these numbers represesnt the amount of morsecode translation there are
   int const static min = 1; 
   int const static max = 6; //there are not six strings, the bound number is not inclusive. so there are 5.
-
-  Serial.begin(9600);
-  
   int randomNumber = Morsecode.randomNumber(min, max); //max is inclonclusive
-
   randomStr = Morsecode.morseCodeStrings(randomNumber); //go to MorseCode.cpp to see how this works
-  
-  Minutebar.on(); //go to MinuteBathis turns on all timer leds r.cpp to see how this works.
+
+  Minutebar.on(130); //go to MinuteBathis turns on all timer leds r.cpp to see how this works.
 }
 
 void loop() 
 {
 
-  if (Timer.minCounter(1)){ //if one minute goes by call timerleds and reset timer
+  if (Timer.secCounter(3)){ //if one minute goes by call timerleds and reset timer
     Minutebar.ledOff(); //this turns off the current led.
     Timer.reset(); //this changes the start of the program to when ever this statement is called.
   }
@@ -45,6 +48,30 @@ void loop()
   if (Minutebar.currentLed <= Minutebar.ledListLength) 
   {
     Morsecode.morseCodeReader(randomStr); //go to MorseCode.cpp to see how MorseCode.morseCodeReader works.
+  }
+
+  if (Minutebar.currentLed > Minutebar.ledListLength) // When last led is turneed these lights blink
+  {
+    if (sirenLight == 0)
+    {
+      digitalWrite(5, HIGH);
+      if (Timer.millisCounter(500))
+      {
+        digitalWrite(5, LOW);
+        sirenLight = 1;
+        Timer.reset();
+      }
+    } 
+    else if(sirenLight == 1)
+    {
+      digitalWrite(6, HIGH);
+      if (Timer.millisCounter(500))
+      {
+        digitalWrite(6, LOW);
+        sirenLight = 0;
+        Timer.reset();
+      }
+    }
   }
 
   /**

@@ -1,8 +1,5 @@
 #include "MorseCodeClass.h"
-#include "TimerClass.h"
 #include "MinuteBarClass.h"
-
-TimerClass MorseTimer;
 
 int MorseCodeClass::randomNumber(int min, int max)
 {
@@ -34,7 +31,8 @@ String MorseCodeClass::morseCodeStrings(int randomNum)
 
 void MorseCodeClass::dot(int morseCodeLed, long oneUnit)
 { 
-  digitalWrite(morseCodeLed, HIGH);
+  analogWrite(morseCodeLed, 130);
+  brightness = 130;
   currentDuration = oneUnit; // dot = 1 unit
 }
 
@@ -46,7 +44,7 @@ void MorseCodeClass::shortSpace(int morseCodeLed, long oneUnit)
 
 void MorseCodeClass::dash(int morseCodeLed, long threeUnits)
 {
-  digitalWrite(morseCodeLed, HIGH);
+  analogWrite(morseCodeLed, brightness);
   currentDuration = threeUnits;
 }
 

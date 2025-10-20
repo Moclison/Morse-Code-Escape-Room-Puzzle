@@ -44,6 +44,7 @@ class MorseCodeClass
     bool isProcessing = false; //find out why these three varuable need to be in the header file
     unsigned long previousTime;
     long currentDuration;
+    int brightness;
 
     const int morseCodeLed = 13;
     void dot(int morseCodeLed, long oneUnit);
